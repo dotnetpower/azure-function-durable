@@ -1,7 +1,6 @@
 # azure-function-durable
 
-
-local.settings.json
+로컬에서 실행 하려면 local.settings.json 파일을 다음과 같은 구조로 생성 필요. 
 ```json
 {
   "IsEncrypted": false,
@@ -12,6 +11,7 @@ local.settings.json
   }
 }
 ```
+로컬 스토리지에뮬레이터 없이 로컬 디버깅을 하기위해서 서버에 배포된 Function App 을 중지 해야 VSCode 에서 breakpoint 가 attach 됨.
 
 # 동작 방식(Durable Function)
 
