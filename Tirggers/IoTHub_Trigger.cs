@@ -35,7 +35,8 @@ namespace Microsoft.Function.Triggers
             //전달 할 파라메타
             var orchestratorInput = strMessage;
 
-            var instanceId = await orchestratorClient.StartNewAsync(
+            //Orchestrator 이름 다음에 instanceid 파라메타가 오버라이드 되어 있으므로, 생략하려면 Input 값의 타입을 명시적으로 선언 필요.
+            var instanceId = await orchestratorClient.StartNewAsync<string>(
                     orchestratorName,
                     orchestratorInput);
 
