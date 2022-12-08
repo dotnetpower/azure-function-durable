@@ -15,7 +15,7 @@ namespace Microsoft.Function.Orchestrations.BlobJob
     public class BlobJobOrchestrator
     {
         
-        //IoTHub_Tirgger 는 Connection에 정의된 Endpoint의 IoT Hub 에서 이벤트가 발생하면 실행되며, 이 트리거 함수 자체가 오케스트레이션 클라이언트가 됨
+        //BlobJobOrchestrator 는 Orchestratior 로써 IoTHub_Trigger 가 호출한다.
         [FunctionName(nameof(BlobJobOrchestrator))]
         public async Task Run(
             [OrchestrationTrigger]IDurableOrchestrationContext context,

@@ -1,13 +1,16 @@
-# azure-function-durable
+# Azure Functions - Durable Function
+1. git clone 이후 dotnet restore 로 dependencies 복원
 
-로컬에서 실행 하려면 local.settings.json 파일을 다음과 같은 구조로 생성 필요. 
+2. 로컬에서 실행 하려면 local.settings.json 파일을 다음과 같은 구조로 생성 필요. 
 ```json
 {
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "AzureWebJobsStorage connection string",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "IoTHubConnectionString": "Built-in endpoints > Event Hub compatible endpoint for service role"
+    "IoTHubConnectionString": "Built-in endpoints > Event Hub compatible endpoint for service role",
+    "SqlConnectionString": "sql connection string",
+    "AzureWebJobs.SQLTrigger.Disable": true
   }
 }
 ```
@@ -32,3 +35,24 @@ using IoTHubTrigger = Microsoft.Azure.WebJobs.EventHubTriggerAttribute
 
  ## 참고
  Durable Function란? https://learn.microsoft.com/ko-kr/azure/azure-functions/durable/durable-functions-overview?tabs=csharp
+
+
+ # SQLTrigger
+ SQL 변경이 발생될 때 트리거 할 수 있는 방법
+
+ ```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "AzureWebJobsStorage connection string",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "IoTHubConnectionString": "Built-in endpoints > Event Hub compatible endpoint for service role",
+    "SqlConnectionString": "sql connection string",
+    "AzureWebJobs.SQLTrigger.Disable": false
+  }
+}
+```
+ 
+
+ ## 참고
+ https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-azure-sql-trigger?tabs=in-process%2Cportal&pivots=programming-language-csharp
