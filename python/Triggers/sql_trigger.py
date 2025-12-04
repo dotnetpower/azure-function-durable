@@ -19,11 +19,6 @@ def main(changes: func.SqlRowList) -> None:
     Args:
         changes: SQL 변경 목록
     """
-    logging.info("Python SQL trigger function processed changes.")
-    
-    for change in changes:
-        logging.info(f"Change operation: {change['Operation']}")
-        logging.info(f"Id: {change['Item']['Id']}")
-        logging.info(f"Title: {change['Item']['title']}")
-        logging.info(f"Url: {change['Item']['url']}")
-        logging.info(f"Completed: {change['Item']['completed']}")
+    # 보안: 변경된 데이터의 개수만 로그에 기록 (민감한 데이터 보호)
+    change_count = sum(1 for _ in changes)
+    logging.info(f"Python SQL trigger function processed {change_count} change(s).")

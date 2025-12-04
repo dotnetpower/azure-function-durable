@@ -4,7 +4,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.EventHubs;
 using System.Text;
-using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using System.Threading.Tasks;
@@ -22,7 +21,12 @@ namespace Microsoft.Function.Orchestrations.BlobJob
             ILogger log)
         {
             var message = context.GetInput<string>();
-            log.LogInformation($"BlobJobOrchestrator processed a message: {message}");
+            
+            // 보안: Orchestrator에서는 ReplaySafeLogger를 사용해야 하며, 민감한 데이터는 로그에 기록하지 않음
+            if (!context.IsReplaying)
+            {
+                log.LogInformation("BlobJobOrchestrator processing message. InstanceId: {InstanceId}", context.InstanceId);
+            }
 
             //Activity 이름
             string BlobJobActivity = nameof(BlobJobActivity1);
@@ -33,7 +37,10 @@ namespace Microsoft.Function.Orchestrations.BlobJob
 
 
             //Orchestrator 인스턴스 ID
-            log.LogInformation($"activity result: '{result}'");
+            if (!context.IsReplaying)
+            {
+                log.LogInformation("Activity completed for InstanceId: {InstanceId}", context.InstanceId);
+            }
 
         }
     }
