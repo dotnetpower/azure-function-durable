@@ -16,7 +16,10 @@
 │   ├── Orchestrations/
 │   │   ├── Activities/
 │   │   └── BlobJob/
-│   └── Triggers/
+│   ├── Triggers/
+│   └── examples/
+│       ├── ai_agent_workflow.py  # AI Agent 워크플로 예제
+│       └── README.md
 │
 └── README.md
 ```
@@ -32,6 +35,74 @@
 - ✅ **긴 시간 실행**: 몇 분에서 몇 시간, 심지어 며칠까지 실행 가능
 - ✅ **재시도 및 복구**: 자동 재시도 및 오류 처리
 - ✅ **확장성**: Azure의 자동 확장 기능 활용
+
+### 🤖 AI Agent Workflow Orchestration
+
+Durable Functions는 **AI 에이전트의 복잡한 워크플로를 조정**하는 데 이상적입니다. 여러 AI 모델과 서비스를 조합하여 지능형 자동화를 구현할 수 있습니다.
+
+**AI Agent 사용 사례:**
+
+1. **Multi-Agent 협업 시스템**
+   ```
+   사용자 입력 → 의도 분석 Agent → 작업 분배 Orchestrator
+                                          ├→ 검색 Agent (RAG)
+                                          ├→ 코드 생성 Agent
+                                          └→ 요약 Agent
+                                          ↓
+                                    결과 통합 및 응답
+   ```
+
+2. **장기 실행 AI 파이프라인**
+   - 대용량 문서 분석 및 요약
+   - 멀티모달 콘텐츠 생성 (텍스트 → 이미지 → 비디오)
+   - 반복적인 모델 학습 및 평가
+
+3. **Human-in-the-Loop AI 워크플로**
+   ```
+   AI 초안 생성 → 사람 검토 대기 → 피드백 반영 → 재생성
+   ```
+
+4. **분산 AI 추론**
+   - 여러 LLM 모델에 동시 요청 (GPT, Claude, Gemini)
+   - 결과 비교 및 앙상블
+   - 최적의 응답 선택
+
+**예시: AI 문서 처리 워크플로**
+```python
+# Orchestrator: 문서 처리 파이프라인
+async def ai_document_processor(context):
+    document = context.get_input()
+    
+    # 1. 문서 분류 (AI Agent)
+    category = await context.call_activity('classify_document', document)
+    
+    # 2. 병렬 처리 (Fan-out)
+    tasks = [
+        context.call_activity('extract_entities', document),      # NER
+        context.call_activity('summarize_content', document),     # 요약
+        context.call_activity('analyze_sentiment', document),     # 감성 분석
+        context.call_activity('generate_keywords', document)      # 키워드 추출
+    ]
+    results = await asyncio.gather(*tasks)
+    
+    # 3. 결과 통합 (Fan-in)
+    final_result = await context.call_activity('merge_results', {
+        'category': category,
+        'entities': results[0],
+        'summary': results[1],
+        'sentiment': results[2],
+        'keywords': results[3]
+    })
+    
+    return final_result
+```
+
+**AI Agent에 Durable Functions를 사용하는 이유:**
+- 🔄 **장시간 실행**: LLM 추론, 임베딩 생성 등 시간이 오래 걸리는 작업 처리
+- 🔁 **재시도 로직**: API 레이트 리밋, 타임아웃 등 외부 AI 서비스 장애 대응
+- 🎯 **조건부 실행**: AI 응답에 따라 다른 에이전트로 라우팅
+- 💾 **상태 유지**: 대화 컨텍스트, 중간 결과 자동 저장
+- 🔀 **병렬 처리**: 여러 AI 모델 동시 호출로 응답 속도 향상
 
 ---
 
