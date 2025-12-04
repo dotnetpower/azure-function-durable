@@ -113,9 +113,7 @@ Durable Functions는 다음과 같은 일반적인 애플리케이션 패턴을 
 ### 1️⃣ **Function Chaining (함수 체이닝)**
 여러 함수를 특정 순서대로 실행하는 패턴입니다. 한 함수의 출력이 다음 함수의 입력이 됩니다.
 
-```
-F1 → F2 → F3 → F4
-```
+![Function Chaining Pattern](https://learn.microsoft.com/ko-kr/azure/azure-functions/durable/media/durable-functions-concepts/function-chaining.png)
 
 **사용 사례:**
 - 순차적인 데이터 처리 파이프라인
@@ -130,11 +128,7 @@ F1 → F2 → F3 → F4
 ### 2️⃣ **Fan-out/Fan-in (팬아웃/팬인)**
 여러 함수를 병렬로 실행한 다음, 모든 함수가 완료될 때까지 기다리는 패턴입니다.
 
-```
-        ┌→ F2 ┐
-F1 → ───┼→ F3 ┼─→ F4
-        └→ F4 ┘
-```
+![Fan-out/Fan-in Pattern](https://learn.microsoft.com/ko-kr/azure/azure-functions/durable/media/durable-functions-concepts/fan-out-fan-in.png)
 
 **사용 사례:**
 - 대량의 데이터를 병렬로 처리
@@ -150,12 +144,7 @@ F1 → ───┼→ F3 ┼─→ F4
 ### 3️⃣ **Async HTTP APIs (비동기 HTTP API)**
 장기 실행 작업의 상태를 폴링하는 패턴입니다. HTTP 웹훅을 통해 비동기 작업을 조정합니다.
 
-```
-클라이언트 → [HTTP 요청] → Orchestrator 시작
-           ← [202 + 상태 URL]
-클라이언트 → [상태 확인] → 진행 중...
-클라이언트 → [상태 확인] → 완료! + 결과
-```
+![Async HTTP APIs Pattern](https://learn.microsoft.com/ko-kr/azure/azure-functions/durable/media/durable-functions-concepts/async-http-api.png)
 
 **사용 사례:**
 - 오래 걸리는 데이터 처리 작업
@@ -171,13 +160,7 @@ F1 → ───┼→ F3 ┼─→ F4
 ### 4️⃣ **Monitor (모니터)**
 워크플로에서 유연한 반복 프로세스를 구현하는 패턴입니다. 특정 조건이 충족될 때까지 주기적으로 확인합니다.
 
-```
-시작 → 확인 → 조건 미충족? → 대기 → 확인
-              ↓
-           조건 충족
-              ↓
-            완료
-```
+![Monitor Pattern](https://learn.microsoft.com/ko-kr/azure/azure-functions/durable/media/durable-functions-concepts/monitor.png)
 
 **사용 사례:**
 - 리소스 상태 모니터링
@@ -194,11 +177,7 @@ F1 → ───┼→ F3 ┼─→ F4
 ### 5️⃣ **Human Interaction (사람 개입)**
 사람의 개입이 필요한 자동화 프로세스를 구현하는 패턴입니다. 승인 대기 등의 시나리오에 적합합니다.
 
-```
-자동 프로세스 → 승인 요청 → 대기(타임아웃) → 승인/거부 → 계속 진행
-                                    ↓
-                              타임아웃 시 에스컬레이션
-```
+![Human Interaction Pattern](https://learn.microsoft.com/ko-kr/azure/azure-functions/durable/media/durable-functions-concepts/approval.png)
 
 **사용 사례:**
 - 지출 승인 워크플로
@@ -214,11 +193,7 @@ F1 → ───┼→ F3 ┼─→ F4
 ### 6️⃣ **Aggregator (Stateful Entities)**
 여러 소스의 이벤트 데이터를 단일 엔터티로 집계하는 패턴입니다. Durable Entities를 사용합니다.
 
-```
-이벤트1 ┐
-이벤트2 ┼→ 집계 엔터티 (상태 유지) → 쿼리 가능
-이벤트3 ┘
-```
+![Aggregator Pattern](https://learn.microsoft.com/ko-kr/azure/azure-functions/durable/media/durable-functions-concepts/aggregator.png)
 
 **사용 사례:**
 - IoT 디바이스 데이터 집계

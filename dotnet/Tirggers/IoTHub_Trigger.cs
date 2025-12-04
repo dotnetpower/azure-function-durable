@@ -4,7 +4,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.EventHubs;
 using System.Text;
-using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using System.Threading.Tasks;
@@ -14,8 +13,6 @@ namespace Microsoft.Function.Triggers
 {
     public class IoTHub_Trigger
     {
-        private static HttpClient client = new HttpClient();
-        
         //IoTHub_Tirgger 는 Connection에 정의된 Endpoint의 IoT Hub 에서 이벤트가 발생하면 실행되며, 이 트리거 함수 자체가 오케스트레이션 클라이언트가 됨
         [FunctionName("IoTHub_Trigger")]
         public async Task Run(
@@ -26,7 +23,8 @@ namespace Microsoft.Function.Triggers
 
             var strMessage = Encoding.UTF8.GetString(message.Body.Array);
 
-            log.LogInformation($"C# IoT Hub trigger function processed a message: {strMessage}");
+            // 보안: 민감한 데이터가 포함될 수 있는 메시지 내용은 로그에 기록하지 않음
+            log.LogInformation("C# IoT Hub trigger function processed a message. Length: {MessageLength}", strMessage?.Length ?? 0);
 
             //Orchestrator 이름
             //var orchestratorName = "BlobJobOrchestrator";

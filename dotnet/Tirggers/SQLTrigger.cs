@@ -26,12 +26,8 @@ namespace Microsoft.Function.Triggers
             IReadOnlyList<SqlChange<ToDoItem>> changes,
             ILogger logger)
         {
-            foreach (SqlChange<ToDoItem> change in changes)
-            {
-                ToDoItem toDoItem = change.Item;
-                logger.LogInformation($"Change operation: {change.Operation}");
-                logger.LogInformation($"Id: {toDoItem.Id}, Title: {toDoItem.title}, Url: {toDoItem.url}, Completed: {toDoItem.completed}");
-            }
+            // 보안: 변경된 데이터의 개수만 로그에 기록 (민감한 데이터 보호)
+            logger.LogInformation("SQL Trigger processed {ChangeCount} change(s).", changes.Count);
         }
     }
 }
